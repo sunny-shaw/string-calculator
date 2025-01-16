@@ -1,19 +1,32 @@
 package calculator;
 
 import java.util.Arrays;
-import java.util.Objects;
 
 public class Calculator {
-    public static final String DELIMITER = ",";
-    public static final String EMPTY_STRING = "";
+    private static final String DEFAULT_DELIMITER = ",";
+    private static final String CUSTOM_DELIMITER_PREFIX = "//";
+    private static final String LINE_BREAK = "\n";
 
-    public int add(String numbers) {
-        String unifiedNumbers = numbers.replace("\n", ",");
-        String[] parsedOperands = unifiedNumbers.split(DELIMITER);
-
-        return Arrays.stream(parsedOperands)
-                .filter(operand -> !Objects.equals(operand, EMPTY_STRING))
+    public int add(final String numbers) {
+        final String[] operands = parseOperands(numbers);
+        return Arrays.stream(operands)
+                .filter(operand -> !operand.isEmpty())
                 .mapToInt(Integer::parseInt)
                 .sum();
+    }
+
+    private static String[] parseOperands(final String numbers) {
+        String delimiter = DEFAULT_DELIMITER;
+        String extractedNumbers = numbers;
+
+        if (extractedNumbers.startsWith(CUSTOM_DELIMITER_PREFIX)) {
+            int delimiterEnd = extractedNumbers.indexOf(LINE_BREAK);
+            delimiter = extractedNumbers.substring(2, delimiterEnd);
+            extractedNumbers = extractedNumbers.substring(delimiterEnd + 1);
+        }
+
+        return extractedNumbers
+                .replace(LINE_BREAK, delimiter)
+                .split(delimiter);
     }
 }

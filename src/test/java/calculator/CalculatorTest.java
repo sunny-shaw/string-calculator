@@ -41,4 +41,11 @@ public class CalculatorTest {
 
         assertEquals(6, actual);
     }
+
+    @Test
+    void shouldSupportDifferentDelimiters() {
+        int actual = calculator.add("//;\n1;2");
+
+        assertEquals(3, actual);
+    }
 }
