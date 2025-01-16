@@ -64,4 +64,11 @@ public class CalculatorTest {
 
         assertEquals(2, actual);
     }
+
+    @Test
+    void shouldAllowVariableLengthDelimiter() {
+        int actual = calculator.add("//[***]\n1***2***3");
+
+        assertEquals(6, actual);
+    }
 }

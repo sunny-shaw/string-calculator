@@ -8,6 +8,9 @@ public class Calculator {
     private static final String LINE_BREAK = "\n";
     public static final String EMPTY_STRING = "";
     public static final String VALIDATION_ERROR_MESSAGE = "negatives not allowed: ";
+    public static final int THRESHOLD = 1001;
+    public static final String DELIMITER_PREFIX = "[";
+    public static final String DELIMITER_SUFFIX = "]";
 
     public int add(final String numbers) {
         final String[] operands = parseOperands(numbers);
@@ -17,7 +20,7 @@ public class Calculator {
         return Arrays.stream(operands)
                 .filter(operand -> !operand.isEmpty())
                 .mapToInt(Integer::parseInt)
-                .filter(operand -> operand < 1001)
+                .filter(operand -> operand < THRESHOLD)
                 .sum();
     }
 
@@ -27,13 +30,22 @@ public class Calculator {
 
         if (extractedNumbers.startsWith(CUSTOM_DELIMITER_PREFIX)) {
             int delimiterEnd = extractedNumbers.indexOf(LINE_BREAK);
-            delimiter = extractedNumbers.substring(2, delimiterEnd);
+            String delimiterDefinition = extractedNumbers.substring(2, delimiterEnd);
+
+            if (delimiterDefinition.startsWith(DELIMITER_PREFIX) && delimiterDefinition.endsWith(DELIMITER_SUFFIX)) {
+                delimiter = delimiterDefinition.substring(1, delimiterDefinition.length() - 1);
+            } else {
+                delimiter = delimiterDefinition;
+            }
+
             extractedNumbers = extractedNumbers.substring(delimiterEnd + 1);
         }
 
+        final String escapedDelimiter = escapeForRegex(delimiter);
+
         return extractedNumbers
                 .replace(LINE_BREAK, delimiter)
-                .split(delimiter);
+                .split(escapedDelimiter);
     }
 
     private static void validate(String[] operands) {
@@ -48,5 +60,9 @@ public class Calculator {
         if (!negativeNumbers.isEmpty()) {
             throw new IllegalArgumentException(VALIDATION_ERROR_MESSAGE + negativeNumbers);
         }
+    }
+
+    private static String escapeForRegex(String delimiter) {
+        return delimiter.replaceAll("(\\W)", "\\\\$1");
     }
 }
