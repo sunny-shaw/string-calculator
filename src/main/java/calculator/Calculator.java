@@ -8,7 +8,8 @@ public class Calculator {
     public static final String EMPTY_STRING = "";
 
     public int add(String numbers) {
-        String[] parsedOperands = numbers.split(DELIMITER);
+        String unifiedNumbers = numbers.replace("\n", ",");
+        String[] parsedOperands = unifiedNumbers.split(DELIMITER);
 
         return Arrays.stream(parsedOperands)
                 .filter(operand -> !Objects.equals(operand, EMPTY_STRING))

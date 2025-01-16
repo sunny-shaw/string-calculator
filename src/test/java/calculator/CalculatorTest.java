@@ -34,4 +34,11 @@ public class CalculatorTest {
 
         assertEquals(32, actual);
     }
+
+    @Test
+    void shouldHandleNewLinesInBetweenNumbersInput() {
+        int actual = calculator.add("1\n2,3");
+
+        assertEquals(6, actual);
+    }
 }
