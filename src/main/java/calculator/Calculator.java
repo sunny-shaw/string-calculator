@@ -17,6 +17,7 @@ public class Calculator {
         return Arrays.stream(operands)
                 .filter(operand -> !operand.isEmpty())
                 .mapToInt(Integer::parseInt)
+                .filter(operand -> operand < 1001)
                 .sum();
     }
 
