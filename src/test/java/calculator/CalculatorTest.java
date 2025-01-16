@@ -1,12 +1,14 @@
 package calculator;
 
 import org.junit.jupiter.api.Test;
+import parser.Parser;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class CalculatorTest {
-    private final Calculator calculator = new Calculator();
+    private final Parser parser = new Parser();
+    private final Calculator calculator = new Calculator(parser);
 
     @Test
     void shouldReturnZeroForEmptyString() {
