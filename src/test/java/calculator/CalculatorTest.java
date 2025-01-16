@@ -2,13 +2,15 @@ package calculator;
 
 import org.junit.jupiter.api.Test;
 import parser.Parser;
+import validator.Validator;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class CalculatorTest {
     private final Parser parser = new Parser();
-    private final Calculator calculator = new Calculator(parser);
+    private final Validator validator = new Validator();
+    private final Calculator calculator = new Calculator(parser, validator);
 
     @Test
     void shouldReturnZeroForEmptyString() {
