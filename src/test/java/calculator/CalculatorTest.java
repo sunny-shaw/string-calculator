@@ -71,4 +71,18 @@ public class CalculatorTest {
 
         assertEquals(6, actual);
     }
+
+    @Test
+    void shouldAllowMultipleDelimiter() {
+        int actual = calculator.add("//[*][%]\n1*2%3");
+
+        assertEquals(6, actual);
+    }
+
+    @Test
+    void shouldAllowMultipleDelimiterWithVariableLength() {
+        int actual = calculator.add("//[***][%%]\n1***2%%3");
+
+        assertEquals(6, actual);
+    }
 }

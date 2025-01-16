@@ -11,6 +11,7 @@ public class Calculator {
     public static final int THRESHOLD = 1001;
     public static final String DELIMITER_PREFIX = "[";
     public static final String DELIMITER_SUFFIX = "]";
+    public static final String PIPE = "|";
 
     public int add(final String numbers) {
         final String[] operands = parseOperands(numbers);
@@ -25,27 +26,34 @@ public class Calculator {
     }
 
     private static String[] parseOperands(final String numbers) {
-        String delimiter = DEFAULT_DELIMITER;
         String extractedNumbers = numbers;
+        String delimiterPattern = DEFAULT_DELIMITER;
 
         if (extractedNumbers.startsWith(CUSTOM_DELIMITER_PREFIX)) {
             int delimiterEnd = extractedNumbers.indexOf(LINE_BREAK);
-            String delimiterDefinition = extractedNumbers.substring(2, delimiterEnd);
+            final String delimiterDefinition = extractedNumbers.substring(2, delimiterEnd);
 
             if (delimiterDefinition.startsWith(DELIMITER_PREFIX) && delimiterDefinition.endsWith(DELIMITER_SUFFIX)) {
-                delimiter = delimiterDefinition.substring(1, delimiterDefinition.length() - 1);
+                delimiterPattern = extractMultipleDelimiters(delimiterDefinition);
             } else {
-                delimiter = delimiterDefinition;
+                delimiterPattern = escapeForRegex(delimiterDefinition);
             }
 
             extractedNumbers = extractedNumbers.substring(delimiterEnd + 1);
         }
 
-        final String escapedDelimiter = escapeForRegex(delimiter);
+        delimiterPattern = delimiterPattern + PIPE + LINE_BREAK;
 
-        return extractedNumbers
-                .replace(LINE_BREAK, delimiter)
-                .split(escapedDelimiter);
+        return extractedNumbers.split(delimiterPattern);
+    }
+
+    private static String extractMultipleDelimiters(String delimiterDefinition) {
+        final String[] delimiters = delimiterDefinition.substring(1, delimiterDefinition.length() - 1).split("]\\[");
+
+        return Arrays.stream(delimiters)
+                .map(Calculator::escapeForRegex)
+                .reduce((d1, d2) -> d1 + PIPE + d2)
+                .orElse(DEFAULT_DELIMITER);
     }
 
     private static void validate(String[] operands) {
