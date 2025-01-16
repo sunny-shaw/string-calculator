@@ -27,4 +27,11 @@ public class CalculatorTest {
 
         assertEquals(6, actual);
     }
+
+    @Test
+    void shouldReturnSumForAnyAmountOfNumbersInput() {
+        int actual = calculator.add("1,5,4,6,7,9");
+
+        assertEquals(32, actual);
+    }
 }

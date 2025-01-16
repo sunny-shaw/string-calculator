@@ -1,18 +1,18 @@
 package calculator;
 
+import java.util.Arrays;
 import java.util.Objects;
 
 public class Calculator {
     public static final String DELIMITER = ",";
+    public static final String EMPTY_STRING = "";
 
     public int add(String numbers) {
-        if (numbers.contains(DELIMITER)) {
-            String[] parsedOperands = numbers.split(DELIMITER);
-            return Integer.parseInt(parsedOperands[0]) + Integer.parseInt(parsedOperands[1]);
-        } else if (!Objects.equals(numbers, "")) {
-            return Integer.parseInt(numbers);
-        } else {
-            return 0;
-        }
+        String[] parsedOperands = numbers.split(DELIMITER);
+
+        return Arrays.stream(parsedOperands)
+                .filter(operand -> !Objects.equals(operand, EMPTY_STRING))
+                .mapToInt(Integer::parseInt)
+                .sum();
     }
 }
