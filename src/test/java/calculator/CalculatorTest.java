@@ -6,9 +6,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class CalculatorTest {
     private final Calculator calculator = new Calculator();
-    
+
     @Test
-    void   shouldReturnZeroForEmptyString() {
+    void shouldReturnZeroForEmptyString() {
         int actual = calculator.add("");
 
         assertEquals(0, actual);
@@ -19,5 +19,12 @@ public class CalculatorTest {
         int actual = calculator.add("1");
 
         assertEquals(1, actual);
+    }
+
+    @Test
+    void shouldReturnSumForTwoNumbersInput() {
+        int actual = calculator.add("1,5");
+
+        assertEquals(6, actual);
     }
 }
