@@ -13,4 +13,13 @@ public class CalculatorTest {
 
         assertEquals(0, actual);
     }
+
+    @Test
+    void shouldReturnSameNumberForSingleNumberInput() {
+        Calculator calculator = new Calculator();
+
+        int actual = calculator.add("1");
+
+        assertEquals(1, actual);
+    }
 }
