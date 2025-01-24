@@ -89,4 +89,12 @@ public class CalculatorTest {
 
         assertEquals(6, actual);
     }
+
+    @Test
+    void shouldValidateForNonNumericOperands() {
+        Exception exception = assertThrows(IllegalArgumentException.class,
+                () -> calculator.add("1,a,4,b"));
+
+        assertEquals("non-numeric not allowed: a,b", exception.getMessage());
+    }
 }
