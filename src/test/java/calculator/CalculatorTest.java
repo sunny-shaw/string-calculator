@@ -97,4 +97,11 @@ public class CalculatorTest {
 
         assertEquals("non-numeric not allowed: a,b", exception.getMessage());
     }
+
+    @Test
+    void shouldAddUpTheCubeValueForANumberWhichAppearMoreThanThreeTimes() {
+        int actual = calculator.add("1,2,2,2,2,2,4");
+
+        assertEquals(13, actual);
+    }
 }
